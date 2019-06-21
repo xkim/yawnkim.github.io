@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Graph Algorithm Visualization</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS dependencies: Bootstrap, etc -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="custom-switch.css" />
+    <!-- JS color input -->
+    <script src="src/jscolor.js"></script>
+    <!-- jQuery (NOT slim), Popper.js, Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    
+    <!-- Bootbox JS -->
+    <script src="bootbox.min.js"></script>
+    <script src="bootbox.locales.min.js"></script>
+
+    <!-- Cytoscape -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.2.22/cytoscape.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
+    
+
+    <!-- CytoscapeJS extentions -->
+    <script src="edgehandles/cytoscape-edgehandles.js"></script>
+
+    <script src="graphml/cytoscape-graphml.js"></script>
+
+</head>
+
+<body>
+    <div class="container pt-5">
+        <div class="row mb-2">
+            <div class="col text-center text-uppercase">
+                <h3>Graph Algorithm Visualization</h3>
+            </div>
+        </div>
+        <div class="row pb-5 mb-5">
+            <div class="col-md-6">
+                <ul class="nav nav-tabs" id="graph-representation" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <span class="nav-link disabled" role="tab" aria-selected="false">Representation: </span>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="main-representation-tab" data-toggle="tab" href="#main-representation" role="tab" aria-controls="main-representation" aria-selected="true">Logical</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="matrix-representation-tab" data-toggle="tab" href="#matrix-representation" role="tab" aria-controls="matrix-representation" aria-selected="false">Adj.Matrix</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="list-representation-tab" data-toggle="tab" href="#list-representation" role="tab" aria-controls="list-representation" aria-selected="false">Adj.List</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="graph-representation-content">
+                    <div class="tab-pane fade show active representation-content-tab" id="main-representation" role="tabpanel" aria-labelledby="main-representation-tab">
+                        <div class="cy-parent">
+                            <div id='cy'></div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade representation-content-tab" id="matrix-representation" role="tabpanel" aria-labelledby="matrix-representation-tab">
+                        <div id='adj-matrix' class="representation-body">
+                        </div>
+                    </div>
+                    <div class="tab-pane fade representation-content-tab" id="list-representation" role="tabpanel" aria-labelledby="list-representation-tab">
+                        <div id='adj-list' class="representation-body">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="">
+                    <ul class="nav nav-tabs" id="side-menu" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="menu-main-tab" data-toggle="tab" href="#menu-main" role="tab" aria-controls="menu-main" aria-selected="true">Main</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="menu-pseudocode-tab" data-toggle="tab" href="#menu-pseudocode" role="tab" aria-controls="menu-pseudocode" aria-selected="false">Pseudocode</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="menu-settings-tab" data-toggle="tab" href="#menu-settings" role="tab" aria-controls="menu-settings" aria-selected="false">Settings</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="menu-edit-tab" data-toggle="tab" href="#menu-edit" role="tab" aria-controls="menu-edit" aria-selected="false">Edition</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content m-3" id="side-menu-content" >
+                        <!-- MENU TAB MAIN -->
+                        <div class="tab-pane fade show active" id="menu-main" role="tabpanel" aria-labelledby="menu-main-tab">
+                            <div class="row">
+                                <div class="menu-main-header col mb-1">
+                                    <h4>
+                                        <a class="btn text-uppercase btn-sm btn-primary btn-block" data-toggle="collapse" href="#collapse-alg">Choose Algorithm</a>
+                                    </h4>
+                                </div>
+                            </div>
+                            <div id="collapse-alg" class="collapse show">
+                                <div class="card card-body p-2">
+                                    <div class="row">
+                                        <div class='col-md-12'>
+                                            <span class='alg-group-label'>Traversing</span>
+                                        </div><div class="col">
+                                            <button class="btn btn-outline-primary" id="alg-bfs" type="button">Breadth First Search</button>
+                                            <button class="btn btn-outline-primary" id="alg-dfs" type="button">Deep First Search</button>
+                                        </div>
+                                    </div><div class='row mt-1'>
+                                        <div class="col-md-12">
+                                            <span class='alg-group-label'>Minimal Spanning Tree</span>
+                                        </div><div class='col'>
+                                            <button class="btn btn-outline-primary" type="button" id="alg-kruskal">Kruskal MST</button>
+                                            <button class="btn btn-outline-primary" type="button" id="alg-prim">Prim MST</button>
+                                        </div>
+                                    </div><div class='row mt-1'>
+                                        <div class="col-md-12">
+                                            <span class='alg-group-label'>Shortest Single Source Path</span>
+                                        </div><div class='col'>
+                                            <button class="btn btn-outline-primary" type="button" id="alg-bellman">Bellman-Ford SSSP</button>
+                                            <button class="btn btn-outline-primary" type="button" id="alg-dijkstra">Dijkstra</button>
+                                        </div>
+                                    </div><div class='row mt-1'>
+                                        <div class="col-md-12">
+                                            <span class='alg-group-label'>All Pair Shortest Path</span>
+                                        </div><div class='col'>
+                                            <button class="btn btn-outline-primary" type="button" id="alg-floyd">Floyd-Warshall</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                               
+                            <hr>
+
+                            <div class="row">
+                                <div class="col">
+                                <a class="btn btn-block btn-sm btn-secondary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    Details
+                                </a>
+                                </div>
+                            </div>
+                            <div class="collapse show" id="collapseExample">
+                                <div class="card">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item">Step <span id="step-i">?</span> of <span id="step-len">?</span></li>
+                                        <li class="list-group-item"><div  id="alg-queue"></div></li>
+                                        <li class="list-group-item"><div  id="alg-extra">
+                                        </div></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MENU TAB PSEUDOCODE -->
+                        <div class="tab-pane fade" id="menu-pseudocode" role="tabpanel" aria-labelledby="menu-pseudocode-tab">
+                            <div id="pseudocode">
+                            </div>
+                        </div>
+
+                        <!-- MENU TAB SETTINGS -->
+                        <div class="tab-pane fade" id="menu-settings" role="tabpanel" aria-labelledby="menu-settings-tab">
+                            <div class="row mt-3">
+                                <div class="col-md-6 form-group">
+                                    <label for="layout-setting" class="">Layout: </label>
+                                    <select name="layout-setting" class="form-control" id = "layout-setting">
+                                        <option value = "preset" selected> preset </option>
+                                        <option value = "random"> random </option>
+                                        <option value = "grid"> grid </option>
+                                        <option value = "circle"> circle </option>
+                                        <option value = "concentric"> concentric </option>
+                                        <option value = "breadthfirst"> breadthfirst </option>
+                                        <option value = "cose"> cose </option>
+                                    </select>
+                                </div>
+                                
+                                <div class="col-md-12">
+                                    <button class='btn btn-outline-primary' id="reset-view"> 
+                                        Reset <i class="fa fa-eject"></i>
+                                    </button>
+                                    <button class='btn btn-outline-secondary' id="toggle-dragNode">
+                                        Drag <i class="fas fa-arrows-alt"></i>
+                                    </button>
+                                    <button class='btn btn-outline-info' id="toggle-graphEdit">
+                                        Draw <i class="fa fa-paint-brush"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <hr>
+                            
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <div class="dropdown btn-group ">
+                                        <button class="btn btn-success dropdown-toggle" type="button" id="export-group-drop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-file-export"></i> Export
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="export-group-drop">
+                                            <button class="dropdown-item" id="export-json" type="button">JSON</button>
+                                            <button class="dropdown-item" id="export-gml" type="button">GraphML</button>
+                                            <button class="dropdown-item" id="export-png" type="button">PNG</button>
+                                            <button class="dropdown-item" id="export-jpg" type="button">JPG</button>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown btn-group ">
+                                        <button class="btn btn-primary dropdown-toggle" type="button" id="import-group-drop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-file-import"></i> Import 
+                                        </button>
+                                        <div class="dropdown-menu" aria-labelledby="import-group-drop">
+                                            <label class="dropdown-item" id="import-json">from JSON<input type="file" id="import-json-file" style="display: none;"></label>
+                                            <label class="dropdown-item" id="import-gml" >from GraphML<input type="file" id="import-gml-file" style="display: none;"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="row graph-state-list">
+                                <div class="col-md-12 graph-state-item">
+                                    <span>Multigraph</span> 
+                                    <label class="switch" for="is-multigraph">
+                                        <input type="checkbox" id="is-multigraph" name="is-multigraph">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="col-md-12 graph-state-item" >
+                                    <span>Negative weight</span> 
+                                    <label class="switch" for="has-negative">
+                                        <input type="checkbox" id="has-negative" name="has-negative">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="col-md-12 graph-state-item" >
+                                    <span>Self-loops</span> 
+                                    <label class="switch" for="self-loop" >
+                                        <input type="checkbox" id="self-loop" name="has-loop">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="col-md-12 graph-state-item" >
+                                    <span>Directed</span> 
+                                    <label class="switch" for="is-directed" >
+                                        <input type="checkbox" id="is-directed" name="is-directed">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="col-md-12 graph-state-item" >
+                                    <span>Weighted</span> 
+                                    <label class="switch"  for="has-weight" >
+                                        <input type="checkbox" id="has-weight" name="has-weight">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                                <div class="col-md-12 graph-state-item" >
+                                    <span>Cycle(s)</span> 
+                                    <label class="switch" for="has-cycle">
+                                        <input type="checkbox" id="has-cycle" name="has-cycle">
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MENU TAB EDITION -->
+                        <div class="tab-pane fade" id="menu-edit" role="tabpanel" aria-labelledby="menu-edit-tab">
+                            <div class="weight-edit mt-3" id="weight-edit-container">
+                                <div class="form-group">
+                                    <label for="weight-source">Source: </label>
+                                    <select class="form-control" id = "weight-source"></select>
+                                </div><div class="form-group">
+                                    <label for="weight-target">Target: </label>
+                                    <select class="form-control" id = "weight-target"></select>
+                                </div><div class="form-group">
+                                    <label for="weight-value">Value of w(s,t): </label>
+                                    <input class="form-control" type="text" name="weight-value" id="weight-value">
+                                </div>
+                                <div class="" role="group" aria-label="weight edit button group">
+                                    <button class="btn btn-outline-primary" id="weight-confirm">
+                                        Confirm
+                                        <i class="fa fa-check"></i>
+                                    </button>
+                                    <button class="btn btn-outline-secondary" id="weight-cancel">
+                                        Cancel
+                                        <i class="fas fa-undo"></i>
+                                    </button>
+                                    <button class="btn btn-outline-danger" id="weight-delete">
+                                        Delete
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="node-edit mt-3" style="display: none;" id="node-edit-container">
+                                <div class="form-group">
+                                    <label for="node-id">Node ID: </label>
+                                    <select class="form-control"  id = "node-id"></select>
+                                </div><div class="form-group">
+                                    <label for="node-name">Name:</label>
+                                    <input class="form-control" type="text" name="node-name" id="node-name">
+                                </div>
+                                <div class="" role="group" aria-label="node edit button group">
+                                    <button class="btn btn-outline-primary" id="node-confirm">
+                                        Confirm
+                                        <i class="fa fa-check"></i>
+                                    </button>
+                                    <button class="btn btn-outline-secondary" id="node-cancel">
+                                        Cancel
+                                        <i class="fas fa-undo"></i>
+                                    </button>
+                                    <button class="btn btn-outline-danger" id="node-delete">
+                                        Delete
+                                        <i class="far fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+                
+            </div>
+
+        </div>
+        
+        <div class="row justify-content-md-center mt-3 fixed-bottom bg-light pt-3 footer-controls">
+            <div class="col-md-auto ">
+                <div class="step-remote">
+                    <button class="btn btn-outline-danger" id='step-stop'> <i class="fas fa-step-backward"></i></button>
+                    <button class="btn btn-outline-primary" id='step-rewind'> <i class="fa fa-backward"></i> </button>
+                    <button class="btn btn-outline-success" id='step-pause'> <i class="fa fa-play"></i></button>
+                    <button class="btn btn-outline-primary" id='step-play'>  <i class="fa fa-forward"></i> </button>
+                    <button class="btn btn-outline-danger" id='step-end'> <i class="fas fa-step-forward"></i></button>
+                </div>
+            </div>
+            <div class="col-md-3 text-center ">
+                <input type="range" class="custom-range" min="0" max="4.5" step="0.5" id="animation-speed">
+                <label for="animation-speed" class="text-muted">Animation speed</label>
+            </div>
+        </div>
+    </div>
+
+    <script src="pseudocode.js" defer></script>
+    <script src="queue.js"> defer</script>
+    <script src="eles.js" defer></script>
+    <script src="alg_sample.js" defer></script>
+    <script src="main.js" defer></script>
+    <script src="settings-tab.js" defer></script>
+
+    <script src="orientation.js" defer></script>
+    <script src="visualization.js" defer></script>
+    
+    <script src="alg_core.js" defer></script>
+    <script src="algs/bfs.js" defer></script>
+    <script src="algs/dfs.js" defer></script>
+    <script src="algs/kruskal.js" defer></script>
+    <script src="algs/prim.js" defer></script>
+    <script src="algs/bellman.js" defer></script>
+    <script src="algs/dijkstra.js" defer></script>
+    <script src="algs/floyd.js" defer></script>
+</body>
+
+</html>
+
+
