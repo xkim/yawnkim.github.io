@@ -1,0 +1,273 @@
+#cy{
+  width: 100%;
+  max-width: 900px;
+  max-height: 900px;
+  height: 600px;
+  display: inline-block;
+  background-color: #DDD;
+  overflow: hidden;
+  position: relative;
+  vertical-align:top;
+}
+
+.cy-parent{
+  position: relative;
+}
+
+
+.representation-content-tab{
+  height: 100%;
+  position: relative;
+}
+
+.representation-body{
+  padding:15px;
+  padding-bottom:30px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+
+/* PSEUDOCODE */
+#pseudocode {
+  width: 500px;
+  height: auto;
+  display: inline-block;
+  background-color: #DDD;
+  padding: 10px;
+  position: relative;
+  vertical-align:top;
+}
+
+#pseudocode h4{
+  margin: 0px;
+}
+
+#pseudocode ol{
+  display:inline-block; 
+  margin: 5px;
+  width: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+}
+
+#pseudocode ol>li{
+  padding-left: 15px;
+  white-space: nowrap;
+}
+
+.highlighted{
+  background-color: yellow;
+}
+
+.supsub{
+  display: inline-block;
+  padding-left: 0.7%;
+}
+
+#pseudocode sup,
+#pseudocode sub{
+  font-size: 60%;
+}
+
+#pseudocode sup{
+  top: -7px;
+}
+
+.supsub sub,
+.supsub sup {
+  position: relative;
+  display: block;
+}
+
+.supsub sub {
+  top: 3px;
+  letter-spacing: 0.75px;
+}
+
+#pseudocode small{
+  font-weight: inherit;
+}
+
+
+
+/* ADJACENCY LIST BEGIN */
+#adj-list{
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+.adj-list-cell{
+  display: inline-block;
+  min-width: 32px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #f9f9f9;
+  border: 1px solid #999;
+  -webkit-border-radius: 4;
+  -moz-border-radius: 4;
+  border-radius: 4px;
+  margin-right: 0px;
+  margin: 0px;
+  padding: 0px 1px;
+  box-sizing: border-box;
+}
+
+.adj-list-arrow{
+  display: inline-block;
+  margin:0;
+  margin-left:-15px;
+  letter-spacing:-3px;
+  word-wrap: none;
+  vertical-align: middle;
+  padding: 0px;
+}
+
+.adj-list-source{
+  text-align: center;
+  vertical-align: middle;
+  display: inline-block;
+  min-width: 15px;
+  font-size: 20px;
+  padding-right: 1px;
+}
+
+#adj-list{
+  white-space: nowrap;
+  text-align: left;
+}
+
+/* ADJACENCY LIST END */
+
+/* ADJACENCY MATRIX BEGIN*/
+#adj-matrix,
+#adj-list{
+  display:inline-block;
+  max-height:600px;
+  max-width: 540px;
+}
+
+#matrix-representation,
+#list-representation{
+  text-align: center;
+}
+
+
+.adj-matrix-row{
+  display: block;
+  background-color: white;
+  white-space: nowrap;
+}
+
+.adj-matrix-row:nth-child(even) .adj-matrix-cell{
+  background-color: #e9e9e9;
+}
+
+.adj-matrix-cell{
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  line-height: 28px; /* subtract 2*border and 2*padding (top and bot)*/
+  text-align: center;
+  vertical-align: middle;
+  background-color: #f9f9f9;
+  border: 1px solid #d9d9d9;
+  margin-right: -1px;
+  margin-bottom:-1px;
+  padding: 0px;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  box-sizing: border-box;
+  z-index: 0;
+}
+
+
+.adj-matrix-row:nth-child(1) .adj-matrix-cell{
+  border:none;
+  background-color: inherit;
+  margin-bottom: 1px;
+}
+
+.adj-matrix-row .adj-matrix-cell:nth-child(1){
+  border:none;
+  background-color: inherit;
+  margin-right: 1px;
+}
+
+.adj-matrix-cell:hover{
+  overflow:visible;
+  z-index: 1;
+}
+
+/* used to add an EXTRA background on hover */
+.adj-matrix-cell:hover span{
+  overflow:visible;
+  background-color: inherit;
+  height: 100%;
+  margin: 0px; 
+  padding: 0px;
+  display: inline-block;
+  z-index: 1;
+  color: red;
+}
+
+.adj-matrix-cell span{
+  color: black;
+}
+
+
+/* ADJACENCY MATRIX END*/
+
+
+/*BOOTSTRAP TABS*/
+#graph-representation-content{
+  height: 600px;
+  overflow: auto;
+}
+
+
+/**/
+
+.graph-state-list{
+  width: 300px;
+}
+
+.graph-state-item {
+  position: relative;
+}
+.graph-state-item span{
+  font-size: 18px;
+  display: inline-block;
+  vertical-align: middle;
+  padding-right:10px;
+}
+
+
+.alg-group-label{
+  font-weight: 600;
+}
+
+.menu-main-header h4{
+  margin-bottom: 0;
+}
+
+.fa-pause{
+    color: orange;
+}
+#step-pause:hover .fa-pause{
+  color: black;
+}
+
+.footer-controls{
+  border-top: 1px solid rgba(0,0,0,.1);
+}
+
+#alg-extra{
+  overflow: auto;
+}
