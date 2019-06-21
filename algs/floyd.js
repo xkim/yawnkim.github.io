@@ -211,7 +211,7 @@ function runFloyd(event){
         s += `<tbody>`
             
         for (let i = 0; i < len; i++){
-            s += `<tr><th scope="row">${i + 1}</th>`
+            s += `<tr><th scope="row">${nodesNames[i]}</th>`
             for (let j = 0; j < len; j++){
                 s+=`<td>${A[i][j]===Infinity ? "&infin;" : A[i][j]}</td>`
             }
