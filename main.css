@@ -14,9 +14,6 @@
   position: relative;
 }
 
-.row.graph-state-list div:last-child{
-  display:none;
-}
 
 .representation-content-tab{
   height: 100%;
